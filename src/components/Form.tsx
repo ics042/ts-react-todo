@@ -1,4 +1,6 @@
 import * as React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 export class Form extends React.Component<{}, IState> {
   constructor(props: {}) {
@@ -15,12 +17,16 @@ export class Form extends React.Component<{}, IState> {
       <div>
         <h1>TS React TODO:</h1>
         <form onSubmit={e => this.handleSunmit(e)}>
-          <input
-            type="text"
+          <TextField
+            label="Task Name"
             value={currentTask}
             onChange={e => this.setState({ currentTask: e.target.value })}
+            margin="normal"
           />
-          <button type="submit">Add Task</button>
+          <br />
+          <Button variant="contained" type="submit" color="primary">
+            Add Task
+          </Button>
         </form>
         <br />
         <section>{this.renderTasks()}</section>
@@ -30,17 +36,19 @@ export class Form extends React.Component<{}, IState> {
 
   public handleSunmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    this.setState({
-      currentTask: "",
-      tasks: [
-        ...this.state.tasks,
-        {
-          id: this.generateId(),
-          value: this.state.currentTask,
-          complete: false,
-        },
-      ],
-    });
+    if (this.state.currentTask != "") {
+      this.setState({
+        currentTask: "",
+        tasks: [
+          ...this.state.tasks,
+          {
+            id: this.generateId(),
+            value: this.state.currentTask,
+            complete: false,
+          },
+        ],
+      });
+    }
   }
 
   public renderTasks(): JSX.Element[] {
